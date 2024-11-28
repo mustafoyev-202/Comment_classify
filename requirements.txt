@@ -1,3 +1,4 @@
 voyageai
 scikit-learn
 streamlit
+python-dotenv

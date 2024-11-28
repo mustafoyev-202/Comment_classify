@@ -1,6 +1,18 @@
 import streamlit as st
 import pickle
 import voyageai
+from dotenv import load_dotenv
+import os
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Get the API key from environment variables
+api_key = os.getenv("VOYAGEAI_API_KEY")
+
+# Check if the API key is loaded properly
+if not api_key:
+    st.error("API key is not found. Please make sure to set the VOYAGEAI_API_KEY in your .env file.")
 
 # Load the trained SVM model
 model_file = 'svm_classifier_model.pkl'
@@ -11,8 +23,7 @@ except Exception as e:
     st.error(f"Failed to load the model: {str(e)}")
 
 # Initialize voyageai client
-vo = voyageai.Client(api_key="pa-4C6Ct4Qal2uerB7lwo-0cSDSvaYK9LuFEE5Wco4BL7k")
-
+vo = voyageai.Client(api_key=api_key)
 
 def predict(text):
     """Predict the class of input text using the trained model."""
@@ -29,7 +40,6 @@ def predict(text):
         return f"Prediction: {prediction} (Confidence: {confidence:.2f})"
     except Exception as e:
         return f"Error: {str(e)}"
-
 
 # Streamlit app layout
 st.title("Text Classification with Trained SVM Model")
